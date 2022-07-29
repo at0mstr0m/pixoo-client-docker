@@ -14,10 +14,11 @@ Only tested on Raspberry Pi 3 Model B. Requires Docker.
         scan on
         ```
     3. Wait until your device appears on the list. Then you can turn off scanning with `scan off`
-    4. Pair with your Divoom Timebox-evo 
+    4. Establish Bluetooth connection to your Divoom Timebox-evo
         ```
         trust DEVICE_MAC_ADDRESS
         pair DEVICE_MAC_ADDRESS
+        connect DEVICE_MAC_ADDRESS
         ```
     5. `exit` the configuration
 2. Build Docker image:
@@ -50,4 +51,8 @@ This class provides many methods to connect and manage a Pixoo device.
 * `draw_anim()`: displays an animation on the Pixoo based on a GIF file (16x16 pixels)
 * `set_system_brightness`: set the global brightness to a specific level (0-100)
 
+---
 
+## Image sources:
+
+[pong.gif](https://giphy.com/gifs/3o7btZzyj3zGh20SSk)

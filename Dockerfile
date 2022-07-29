@@ -10,4 +10,8 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
-CMD [ "python3", "test.py"]
+ENV PORT=1337
+
+CMD [ "python3", "app.py"]
+
+EXPOSE 1337
