@@ -3,7 +3,7 @@
 Fork of [Divoom Pixoo client for Python3](https://github.com/virtualabs/pixoo-client).
 Only tested on Raspberry Pi 3 Model B. Requires Docker.
 
-##Getting Started
+## Getting Started
 
 1. Connect to **Divoom Timebox-Evo** via Bluetooth
     1. Use [Bluez](http://www.bluez.org/) via `sudo bluetoothctl`
@@ -30,7 +30,7 @@ Only tested on Raspberry Pi 3 Model B. Requires Docker.
 `docker run -ti --network=host -e MAC_ADDRESS="DEVICE_MAC_ADDRESS" pixoo-test`
 
 ---
-##Original README:
+## Original README:
 
 This small python script provides a way to communicate with a Divoom Pixoo over Bluetooth. 
 
