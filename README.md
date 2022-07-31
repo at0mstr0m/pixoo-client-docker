@@ -56,3 +56,4 @@ This class provides many methods to connect and manage a Pixoo device.
 ## Image sources:
 
 [pong.gif](https://giphy.com/gifs/3o7btZzyj3zGh20SSk)
+Pixel Art Numbers inspired by and taken from [here](http://pixelartmaker.com/art/cb56ff285ad38b3).
