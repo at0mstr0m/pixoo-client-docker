@@ -18,9 +18,9 @@ Only tested on Raspberry Pi 3 Model B. Requires Docker.
         ```
         trust DEVICE_MAC_ADDRESS
         pair DEVICE_MAC_ADDRESS
-        connect DEVICE_MAC_ADDRESS
         ```
-    5. `exit` the configuration
+        If an error appears use `remove DEVICE_MAC_ADDRESS` and retry establishing a connection.
+    5. Use `exit` to exit the configuration.
 2. Build Docker image:
 `docker build --platform linux/arm/v7 --tag pixoo-test .`
 3. Save to .tar-File:
