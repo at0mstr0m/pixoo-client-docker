@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  api:
+    build: ./pixoo-api
+    ports:
+      - 1337:1337
+  ui:
+    build: ./gui
+    ports:
+      - 3000:3000
+    depends_on:
+      - api

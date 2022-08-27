@@ -1,7 +1,9 @@
+from urllib import response
 from pixoo import Pixoo
 import os
 import re
-from flask import Flask, request
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 from PIL import Image
 
 TWO_DIGIT_NUMBER = re.compile('^[0-9]{1,2}$')
@@ -16,6 +18,7 @@ print("Connection established!")
 pixoo_client.draw_pic(filepath="assets/tomato.png")
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/', methods=['GET'])
@@ -53,7 +56,11 @@ def draw_number():
         final_image.alpha_composite(left_num_asset)
         final_image.alpha_composite(right_num_asset)
     pixoo_client.draw_pic(image=final_image)
-    return 'draw_pic', 200
+    response = {
+        "result": "success",
+        "num": num,
+    }
+    return jsonify(response), 200
 
 
 if __name__ == '__main__':
