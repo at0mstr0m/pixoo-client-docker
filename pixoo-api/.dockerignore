@@ -1,4 +1,4 @@
-pixoo-test.tar
+*.tar
 .gitignore
 README.md
 test.py

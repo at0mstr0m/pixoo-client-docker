@@ -156,14 +156,9 @@ class Pixoo(object):
     else:
       print('[!] Image must be square.')
 
-  def draw_gif(self, filepath, speed=100):
-    """
-    Parse Gif file and draw as animation.
-    """
-    # encode frames
+  def gif_to_frames(self, anim_gif, speed = 100):
     frames = []
     timecode = 0
-    anim_gif = Image.open(filepath)
     for n in range(anim_gif.n_frames):
       anim_gif.seek(n)
       nb_colors, palette, pixel_data = self.encode_raw_image(anim_gif.convert(mode='RGB'))
@@ -172,14 +167,23 @@ class Pixoo(object):
       frame = frame_header + palette + pixel_data
       frames += frame
       timecode += speed
-
-    # send animation
+    return frames
+  
+  def send_animation(self, frames):
     nchunks = ceil(len(frames)/200.)
     total_size = len(frames)
     for i in range(nchunks):
       chunk = [total_size&0xff, (total_size>>8)&0xff, i]
       self.send(0x49, chunk+frames[i*200:(i+1)*200])
-   
+
+  def draw_gif(self, filepath=None, speed=100):
+    """
+    Parse Gif file and draw as animation.
+    """
+    # encode frames
+    anim_gif = Image.open(filepath)
+    frames = self.gif_to_frames(anim_gif, speed)
+    self.send_animation(frames)
 
   def draw_anim(self, filepaths, speed=100):
     timecode=0
@@ -197,11 +201,7 @@ class Pixoo(object):
       n += 1
     
     # send animation
-    nchunks = ceil(len(frames)/200.)
-    total_size = len(frames)
-    for i in range(nchunks):
-      chunk = [total_size&0xff, (total_size>>8)&0xff, i]
-      self.send(0x49, chunk+frames[i*200:(i+1)*200])
+    self.send_animation(frames)
 
 
   def draw_pic(self, filepath=None, image=None):

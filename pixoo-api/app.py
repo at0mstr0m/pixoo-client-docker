@@ -4,7 +4,8 @@ import os
 import re
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from PIL import Image
+from PIL import Image, ImageFont, ImageDraw
+from io import BytesIO
 
 TWO_DIGIT_NUMBER = re.compile('^[0-9]{1,2}$')
 
@@ -19,6 +20,8 @@ pixoo_client.draw_pic(filepath="assets/tomato.png")
 
 app = Flask(__name__)
 CORS(app)
+
+font = ImageFont.truetype('assets/fonts/MP16OSF.ttf', 16)
 
 
 @app.route('/', methods=['GET'])
@@ -61,6 +64,32 @@ def draw_number():
         "num": num,
     }
     return jsonify(response), 200
+
+
+@app.route('/ticker/<text>', methods=['GET'])
+def ticker(text):
+    text_width, text_height = font.getbbox(text)[2:]
+    canvas = Image.new('RGB', (text_width, text_height))
+    draw = ImageDraw.Draw(canvas)
+    draw.text((0, 0), text, 'white', font)
+    canvas.save('test.png', 'PNG')
+    frames = []
+    upper = 3
+    lower = upper + 16
+    for i in range(canvas.width + 16):
+        frames.append(canvas.crop((i - 16, upper, i, lower)))
+    byte_stream = BytesIO()
+    frames[0].save(byte_stream,
+                   format='GIF',
+                   append_images=frames,
+                   save_all=True,
+                   duration=75,
+                   loop=0)
+    byte_stream.seek(0)
+    animation = Image.open(byte_stream)
+    frames = pixoo_client.gif_to_frames(animation, 1)
+    pixoo_client.send_animation(frames)
+    return jsonify({'text': text}), 200
 
 
 if __name__ == '__main__':

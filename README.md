@@ -25,8 +25,8 @@ Only tested on Raspberry Pi 3 Model B. Requires Docker.
 `docker build --platform linux/arm/v7 --tag pixoo-api .`
 `docker build --platform linux/arm/v7 -t gui-react .`
 3. Save to .tar-File:
-`docker save pixoo-api > pixoo-api.tar`
-`docker save gui-react > gui-react.tar`
+`docker save pixoo-api -o pixoo-api.tar`
+`docker save gui-react -o gui-react.tar`
 4. Load image on Raspberry Pi:
 `docker load --input IMAGE_NAME.tar`
 5. Run on Raspberry Pi 3 Model B with network from host to use bluetooth device:
