@@ -22,16 +22,22 @@ Only tested on Raspberry Pi 3 Model B. Requires Docker.
         If an error appears use `remove DEVICE_MAC_ADDRESS` and retry establishing a connection.
     5. Use `exit` to exit the configuration.
 2. Build Docker image:
-`docker build --platform linux/arm/v7 --tag pixoo-api .`
-`docker build --platform linux/arm/v7 -t gui-react .`
+```
+docker build --platform linux/arm/v7 --tag pixoo-api . 
+docker build --platform linux/arm/v7 -t gui-react .
+```
 3. Save to .tar-File:
-`docker save pixoo-api -o pixoo-api.tar`
-`docker save gui-react -o gui-react.tar`
+```
+docker save pixoo-api -o pixoo-api.tar
+docker save gui-react -o gui-react.tar
+```
 4. Load image on Raspberry Pi:
 `docker load --input IMAGE_NAME.tar`
 5. Run on Raspberry Pi 3 Model B with network from host to use bluetooth device:
-`docker run -tid --network=host -e MAC_ADDRESS="DEVICE_MAC_ADDRESS" pixoo-api`
-`docker run -tid --network=host gui-react`
+```
+docker run -tid --network=host -e MAC_ADDRESS="DEVICE_MAC_ADDRESS" pixoo-api
+docker run -tid --network=host gui-react
+```
 
 ---
 ## Original README:

@@ -1,4 +1,3 @@
-from urllib import response
 from pixoo import Pixoo
 import os
 import re
@@ -6,23 +5,72 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from PIL import Image, ImageFont, ImageDraw
 from io import BytesIO
+from flask_jwt_extended import JWTManager, create_access_token, get_jwt, get_jwt_identity, unset_jwt_cookies, jwt_required
+from datetime import timedelta, datetime, timezone
+import json
 
 TWO_DIGIT_NUMBER = re.compile('^[0-9]{1,2}$')
+# font = ImageFont.truetype('assets/fonts/MP16OSF.ttf', 16)
+font = ImageFont.load_default()
 
 MAC_ADDRESS = os.getenv("MAC_ADDRESS")
-PORT = int(os.getenv("PORT"))
+PORT = int(os.getenv("PORT", 1337))
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY ", 'super secret default key')
 
-pixoo_client = Pixoo(MAC_ADDRESS)
-print("Trying to connect...")
-pixoo_client.connect()
-print("Connection established!")
-pixoo_client.draw_pic(filepath="assets/tomato.png")
+if MAC_ADDRESS:
+    pixoo_client = Pixoo(MAC_ADDRESS)
+    print("Trying to connect to Divoom Timebox-Evo...")
+    pixoo_client.connect()
+    print("Connection established!")
+    pixoo_client.draw_pic(filepath="assets/tomato.png")
 
 app = Flask(__name__)
 CORS(app)
+app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=1)
+jwt = JWTManager(app)
 
-font = ImageFont.truetype('assets/fonts/MP16OSF.ttf', 16)
+@app.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(hours=3))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            data = response.get_json()
+            if type(data) is dict:
+                data["access_token"] = access_token 
+                response.data = json.dumps(data)
+        return response
+    except (RuntimeError, KeyError):
+        # In case there is not a valid JWT. Just return the original respone
+        return response
 
+@app.route('/token', methods=["POST"])
+def create_token():
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+    if username != "test" or password != "test":
+        return {"msg": "Wrong username or password"}, 401
+    access_token = create_access_token(identity=username)
+    response = {"access_token":access_token}
+    return response
+
+@app.route('/profile')
+@jwt_required()
+def my_profile():
+    response_body = {
+        "name": "Max Mustermann",
+        "about" :"Hallo! Hier könnte Ihre Werbung stehen!"
+    }
+    return jsonify(response_body)
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
+    return response
 
 @app.route('/', methods=['GET'])
 def hello_world():
