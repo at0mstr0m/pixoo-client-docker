@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
@@ -35,32 +35,37 @@ export default function Login(props) {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="formBasicUsername">
-        <Form.Label>Benutzername</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Benutzername"
-          value={username}
-          autoComplete="on"
-          onChange={(event) => setUsername(event.target.value)}
-        />
-      </Form.Group>
-
-      <Form.Group controlId="formBasicPassword">
-        <Form.Label>Passwort</Form.Label>
-        <Form.Control
-          type="password"
-          placeholder="Passwort"
-          autoComplete="on"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-      </Form.Group>
-
-      <Button variant="primary" type="submit">
-        Einloggen
-      </Button>
-    </Form>
+    <Container>
+      <Row className="justify-content-md-center mt-5">
+        <Col xs={12} md={6} lg={3}>
+          <h1 className="text-center mb-4">Login</h1>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mt-3">
+              <Form.Label>Benutzername</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Benutzername"
+                value={username}
+                autoComplete="on"
+                onChange={(event) => setUsername(event.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mt-3">
+              <Form.Label>Passwort</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Passwort"
+                autoComplete="on"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit" className="mt-3">
+              Einloggen
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 }
