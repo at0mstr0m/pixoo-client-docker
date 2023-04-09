@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { API_URL } from "../../constants/backendUrl";
+import { ROUTES } from "../../constants/backendRoutes";
 
 function Profile(props) {
   const [profileData, setProfileData] = useState(null);
@@ -12,7 +12,7 @@ function Profile(props) {
     try {
       const response = await axios({
         method: "GET",
-        url: API_URL + "/profile",
+        url: ROUTES.profile,
         headers: {
           Authorization: "Bearer " + token,
         },

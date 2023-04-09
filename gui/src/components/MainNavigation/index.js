@@ -16,6 +16,9 @@ export default function MainNavigation() {
       <LinkContainer to="/profile">
         <Nav.Link>Profile</Nav.Link>
       </LinkContainer>
+      <LinkContainer to="/ticker">
+        <Nav.Link>Ticker</Nav.Link>
+      </LinkContainer>
       <LinkContainer to="/logout">
         <Nav.Link>Logout</Nav.Link>
       </LinkContainer>

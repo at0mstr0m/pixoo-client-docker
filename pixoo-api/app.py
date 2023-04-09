@@ -114,13 +114,14 @@ def draw_number():
     return jsonify(response), 200
 
 
-@app.route('/ticker/<text>', methods=['GET'])
-def ticker(text):
+@app.route('/ticker', methods=['POST'])
+def ticker():
+    text = request.json.get("text", '')
     text_width, text_height = font.getbbox(text)[2:]
     canvas = Image.new('RGB', (text_width, text_height))
     draw = ImageDraw.Draw(canvas)
     draw.text((0, 0), text, 'white', font)
-    canvas.save('test.png', 'PNG')
+    # canvas.save('test.png', 'PNG')
     frames = []
     upper = 3
     lower = upper + 16

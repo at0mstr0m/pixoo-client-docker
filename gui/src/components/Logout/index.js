@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { API_URL } from "../../constants/backendUrl";
+import { ROUTES } from "../../constants/backendRoutes";
 
 export default function Logout(props) {
   const { token, removeToken, isLoggedIn } = useContext(AuthContext);
@@ -14,14 +14,14 @@ export default function Logout(props) {
       try {
         await axios({
           method: "POST",
-          url: API_URL + "/logout",
+          url: ROUTES.logout,
           headers: {
             Authorization: "Bearer " + token,
           },
         });
         removeToken();
       } catch (error) {
-          console.error(error);
+        console.error(error);
       }
     }
     logout();

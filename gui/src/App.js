@@ -8,6 +8,7 @@ import RootLayout from "./components/RootLayout";
 import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import Ticker from "./pages/Ticker";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "ticker",
+        element: (
+          <ProtectedRoute>
+            <Ticker />
           </ProtectedRoute>
         ),
       },
