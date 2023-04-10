@@ -10,19 +10,21 @@ from datetime import timedelta, datetime, timezone
 import json
 
 TWO_DIGIT_NUMBER = re.compile('^[0-9]{1,2}$')
-# font = ImageFont.truetype('assets/fonts/MP16OSF.ttf', 16)
-font = ImageFont.load_default()
+font = ImageFont.truetype('assets/fonts/MP16OSF.ttf', 16)
+# font = ImageFont.load_default()
 
 MAC_ADDRESS = os.getenv("MAC_ADDRESS")
 PORT = int(os.getenv("PORT", 1337))
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY ", 'super secret default key')
 
+print("Trying to connect to Divoom Timebox-Evo...")
 if MAC_ADDRESS:
     pixoo_client = Pixoo(MAC_ADDRESS)
-    print("Trying to connect to Divoom Timebox-Evo...")
     pixoo_client.connect()
     print("Connection established!")
     pixoo_client.draw_pic(filepath="assets/tomato.png")
+else:
+    print("Not connected, MAC_ADDRESS is None!")
 
 app = Flask(__name__)
 CORS(app)

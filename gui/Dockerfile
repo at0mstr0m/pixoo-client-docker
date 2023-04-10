@@ -1,16 +1,24 @@
 # https://jsramblings.com/dockerizing-a-react-app/
 
-FROM node:alpine as builder
+FROM node:19.8.1 as builder
+
+ENV NPM_CONFIG_LOGLEVEL info
 
 WORKDIR /app
 
 COPY . .
 
+# check npm works
+RUN npm -v
+
 RUN npm ci
+
+# # TODO: check if necessary
+# RUN npx update-browserslist-db@latest
 
 RUN npm run build
 
-FROM nginx:alpine as production
+FROM nginx:1.23.4-alpine as production
 
 ENV NODE_ENV production
 

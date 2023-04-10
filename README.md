@@ -24,7 +24,7 @@ Only tested on Raspberry Pi 3 Model B. Requires Docker.
 2. Build Docker image:
 ```
 docker build --platform linux/arm/v7 --tag pixoo-api . 
-docker build --platform linux/arm/v7 -t gui-react .
+docker build --platform linux/arm/v7 --tag gui-react .
 ```
 3. Save to .tar-File:
 ```
